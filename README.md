@@ -2,15 +2,31 @@
 
 ![Build](https://github.com/Elehiggle/rn-scrollview-frame-change-repro/workflows/Pre%20Merge%20Checks/badge.svg)
 
-This is your new React Native Reproducer project.
+Reproducer for a React Native iOS issue (New Architecture): when a `ScrollView`'s frame changes while a finger holds the content pulled past the top, `contentOffset.y` is set to 0.
 
-# Reproducer TODO list
+Only `ReproducerApp/App.tsx` differs from the [reproducer template](https://github.com/react-native-community/reproducer-react-native) (React Native 0.88.1).
 
-- [x] 1. Create a new reproducer project.
-- [ ] 2. Git clone your repository locally.
-- [ ] 3. Edit the project to reproduce the failure you're seeing.
-- [ ] 4. Push your changes, so that Github Actions can run the CI.
-- [ ] 5. Make sure the repository is public and share the link with the issue you reported.
+## Run
+
+```bash
+cd ReproducerApp
+yarn install
+bundle install
+(cd ios && bundle exec pod install)
+yarn ios
+```
+
+## Steps
+
+1. The footer under the list changes its height between 80 and 140 every second. This changes the height of the `ScrollView` above it.
+2. With the list at the top, pull it down slowly and keep the finger down for a few seconds. The top line shows a negative `y` and `finger down`.
+3. Each time the footer changes height, the list jumps toward the top. The log shows `scroll y 0.0`, then about half of the value before.
+4. Turn on "resize content instead (control)" and repeat step 2. The spacer at the end of the content now changes height instead of the footer. The offset is kept.
+
+The app logs each footer change and each `onScroll` offset with a timestamp. Read them in Metro's terminal or with
+`xcrun simctl spawn booted log stream --predicate 'subsystem == "com.facebook.react.log"'`.
+
+Recordings from an iPhone 18 Pro simulator on iOS 27.2 are in [`evidence/`](evidence). The drags in them are XCTest-synthesised pans, and the clips show no touch indicator.
 
 # How to use this Reproducer
 
