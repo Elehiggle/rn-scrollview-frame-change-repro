@@ -2,15 +2,30 @@
 
 ![Build](https://github.com/Elehiggle/rn-scrollview-frame-change-repro/workflows/Pre%20Merge%20Checks/badge.svg)
 
-This is your new React Native Reproducer project.
+Reproducer for a React Native iOS issue (New Architecture): with `contentInsetAdjustmentBehavior="automatic"`, `scrollTo()` and `scrollToEnd()` clamp against `contentInset`, not `adjustedContentInset`. See [react-native#57522](https://github.com/react/react-native/issues/57522).
 
-# Reproducer TODO list
+Only `ReproducerApp/App.tsx` differs from the [reproducer template](https://github.com/react-native-community/reproducer-react-native) (React Native 0.88.1).
 
-- [x] 1. Create a new reproducer project.
-- [ ] 2. Git clone your repository locally.
-- [ ] 3. Edit the project to reproduce the failure you're seeing.
-- [ ] 4. Push your changes, so that Github Actions can run the CI.
-- [ ] 5. Make sure the repository is public and share the link with the issue you reported.
+## Run
+
+```bash
+cd ReproducerApp
+yarn install
+bundle install
+(cd ios && bundle exec pod install)
+yarn ios
+```
+
+## Steps
+
+`T` is the top safe-area inset (62 on an iPhone 18 Pro).
+
+1. At rest the panel shows `y = -62.0` and row 1 sits below the status bar.
+2. Scroll down a little, then tap `scrollTo({y: -62})`. The list stops at `y = 0.0`, with row 1 under the status bar. The animated button ends at the same place.
+3. Turn on `scrollToOverflowEnabled` and tap `scrollTo({y: -62})` again. The list stops at `y = -62.0`.
+4. Scroll to the very end by hand: `y = 560.0`. Tap `scrollToEnd()`: the list moves back to `y = 526.0`. The switch does not change this.
+
+Recordings from an iPhone 18 Pro simulator on iOS 27.2 are in [`evidence/`](evidence).
 
 # How to use this Reproducer
 
