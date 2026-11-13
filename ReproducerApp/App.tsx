@@ -1,7 +1,7 @@
 /**
  * iOS, New Architecture: with contentInsetAdjustmentBehavior="automatic",
- * scrollTo() and scrollToEnd() clamp against contentInset instead of
- * adjustedContentInset.
+ * scrollTo() clamps to contentInset and scrollToEnd() builds its target from
+ * it; both ignore adjustedContentInset.
  *
  * At rest at the top the offset is -T (T = top safe-area inset).
  * scrollTo({y: -T}) should return to exactly that position but lands at 0,

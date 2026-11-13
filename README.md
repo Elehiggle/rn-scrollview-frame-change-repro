@@ -2,7 +2,7 @@
 
 ![Build](https://github.com/Elehiggle/rn-scrollview-frame-change-repro/workflows/Pre%20Merge%20Checks/badge.svg)
 
-Reproducer for a React Native iOS issue (New Architecture): with `contentInsetAdjustmentBehavior="automatic"`, `scrollTo()` and `scrollToEnd()` clamp against `contentInset`, not `adjustedContentInset`. See [react-native#57522](https://github.com/react/react-native/issues/57522).
+Reproducer for a React Native iOS issue (New Architecture): with `contentInsetAdjustmentBehavior="automatic"`, `scrollTo()` and `scrollToEnd()` work from `contentInset`, not `adjustedContentInset`: `scrollTo()` clamps to it and `scrollToEnd()` builds its target from it. See [react-native#57522](https://github.com/react/react-native/issues/57522).
 
 Only `ReproducerApp/App.tsx` differs from the [reproducer template](https://github.com/react-native-community/reproducer-react-native) (React Native 0.88.1).
 
